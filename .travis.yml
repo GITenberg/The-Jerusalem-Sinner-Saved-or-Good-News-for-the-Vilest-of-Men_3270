@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: Q58ctMRNxRa7pFQWYxIAhMjbi0U+FLY0ag+E4GAP/ECeTDkEsur/wNu28B0h0eZUrpH3B36HxRtoYsLnXiAYx9ImFxfHCfNXXp5mxUfYyxVPYkcw3SFP6qDJtLylFzqr+8FSEZfPXnWqUBOnDQbigItWa+32AJRbTu3mvfFr1VazDTN1IRXTnMmvP5vW0Epw1XFs4Mu7bITozzmo2fgJcGMWXmcI7QsGYmtT76F0arbcz42K5cVv+M1bmzhEjJsxRctODysCjtd9ndUA+18qjWh4TvHyso8OvBAjTTSse3E7uxl1yOCwDuOFZtF5KnjSPrZqJarWa3uRUwKlNAB/CPjKJnQ5ySJtwQ2s3nQKYVLwRkclFEGBoAUyz1/ePUG/QxSksXUet/FoKbAEwGfUXriq2e4mnT3aEcIXmsJUQr5+8Jjj8YfbLFIGr9CowI6tXZzC6rUpcycy5VjQy36eP5XqJJQKMcCPBlDv9jjp2ZbMuZc01JJcyhg/GiZ28FGQAXgkFF76590CumRYpAf1zRFdWRDYu1yEcJtQF7NDQli8lcBBHrcZkkoTd2s//4d2oYealqFdnh3q84DZsY2wenjeQlLPKi/IVxUckbA5k2Y/WlevxeaY3VSEdkLGNKblFSD9ff8QEHK514xKeLoLiC6JINrPkdWBJZk4Nqhiiac=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/The-Jerusalem-Sinner-Saved-or-Good-News-for-the-Vilest-of-Men_3270
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
