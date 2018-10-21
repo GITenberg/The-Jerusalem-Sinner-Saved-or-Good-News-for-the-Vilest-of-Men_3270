@@ -1,5 +1,5 @@
 _repo: The-Jerusalem-Sinner-Saved-or-Good-News-for-the-Vilest-of-Men_3270
-_version: 0.2.0
+_version: 0.2.1
 covers:
 - cover_type: generated
   image_path: cover.png
@@ -29,5 +29,6 @@ subjects:
 - !lcsh 'Forgiveness of sin -- Sermons -- Early works to 1800'
 - !lcc 'BR'
 - !lcsh 'Salvation'
+- GITenberg
 title: The Jerusalem Sinner Saved; or, Good News for the Vilest of Men
 url: http://www.gutenberg.org/ebooks/3270
